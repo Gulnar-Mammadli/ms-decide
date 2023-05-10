@@ -1,7 +1,7 @@
 package com.group11.msdecide.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.group11.msdecide.model.enums.Status;
+import com.group11.msdecide.model.enums.DecisionStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +26,7 @@ public class LoanDecision {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Status status;
+    private DecisionStatus decisionStatus;
 
     @JsonProperty("customer_id")
     @Column(nullable = false,name = "customer_id")
@@ -47,7 +47,6 @@ public class LoanDecision {
     @Column(nullable = false,name = "created_at")
     private LocalDateTime createdAt;
 
-//    TODO decisionu update etmek olur?
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 

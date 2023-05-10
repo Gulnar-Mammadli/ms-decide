@@ -29,8 +29,6 @@ public class FinancialInformation {
     private BigDecimal currentBalance;
     private BigDecimal annualAverageBalance;
 
-//    TODO datedi yoxsa say?
-//    bu 2 datani haradan goturur?
     private BigDecimal currentDueDays;
     private int numberOfDueDays;
 
