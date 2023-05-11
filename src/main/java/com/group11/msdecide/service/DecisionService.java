@@ -42,7 +42,6 @@ public class DecisionService {
         int i = decision.getDecidedAmount().compareTo(loanDto.getAmount());
         if (decision.getDecisionStatus() == DecisionStatus.APPROVED && i == 0) {
             loanDto.setStatus(Status.ACCEPTED);
-//            loanDto.setUpdatedAt(LocalDateTime.now());
             log.info("Log message - a loan status for loan id: {} has been accepted successfully", loanDto.toString());
             kafkaTemplate.send("decisionTopic", loanDto);
 
