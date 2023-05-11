@@ -24,6 +24,7 @@ public class DecisionService {
     private final LoanDecisionRepository decisionRepository;
 
     private final KafkaTemplate<String, LoanDto> kafkaTemplate;
+
     @KafkaListener(topics = "loanCreatedTopic", groupId = "loanEventGroup")
     public LoanDecision makeDecision(LoanDto loanDto) {
 
@@ -39,15 +40,14 @@ public class DecisionService {
                 .build();
 
         int i = decision.getDecidedAmount().compareTo(loanDto.getAmount());
-        if (decision.getDecisionStatus() == DecisionStatus.APPROVED && i==0) {
+        if (decision.getDecisionStatus() == DecisionStatus.APPROVED && i == 0) {
             loanDto.setStatus(Status.ACCEPTED);
-            loanDto.setUpdatedAt(LocalDateTime.now());
+//            loanDto.setUpdatedAt(LocalDateTime.now());
             log.info("Log message - a loan status for loan id: {} has been accepted successfully", loanDto.toString());
             kafkaTemplate.send("decisionTopic", loanDto);
 
-        } else if (decision.getDecisionStatus() == DecisionStatus.APPROVED && i>0) {
+        } else if (decision.getDecisionStatus() == DecisionStatus.APPROVED && i > 0) {
             loanDto.setStatus(Status.OFFERED);
-            loanDto.setUpdatedAt(LocalDateTime.now());
             log.info("Log message - a loan status for loan id: {} has been offered successfully", loanDto.toString());
 
             kafkaTemplate.send("decisionTopic", loanDto);
@@ -55,7 +55,6 @@ public class DecisionService {
 
         } else if (decision.getDecisionStatus() == DecisionStatus.REJECTED) {
             loanDto.setStatus(Status.REFUSED);
-            loanDto.setUpdatedAt(LocalDateTime.now());
             log.info("Log message - a loan status for loan id: {} has been refused", loanDto.toString());
 
             kafkaTemplate.send("decisionTopic", loanDto);
