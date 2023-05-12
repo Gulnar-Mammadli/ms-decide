@@ -37,4 +37,7 @@ public class LoanDto {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @JsonProperty("decided_amount")
+    private BigDecimal decidedAmount;
+
 }
