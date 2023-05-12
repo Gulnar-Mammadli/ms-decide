@@ -22,7 +22,7 @@ public class FinancialInformation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    TODO hem de customerId olmali deyilmi?
+    private Long customerId;
     private BigDecimal annualIncome;
 
     private BigDecimal monthlyTurnover;
