@@ -75,7 +75,8 @@ public class DecisionService {
 
             } else if (decision.getDecisionStatus() == DecisionStatus.APPROVED && i >0) {
                 loanDto.setStatus(Status.OFFERED);
-                loanDto.setDecidedAmount(decision.getDecidedAmount());
+//                loanDto.setDecidedAmount(decision.getDecidedAmount());
+                loanDto.setDecidedAmount(loanDto.getAmount());
                 log.info("Log message - a loan status for loan id: {} has been offered successfully", loanDto.toString());
                 kafkaTemplate.send("decisionTopic", loanDto);
 
