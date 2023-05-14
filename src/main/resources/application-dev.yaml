@@ -8,6 +8,14 @@ spring:
     password: postgres
     username: postgres
     url: jdbc:postgresql://localhost:5432/decision-db
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+
   kafka:
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -15,7 +23,7 @@ spring:
         spring:
           json:
             type:
-              mapping: loandtosend:com.group11.msdecide.model.dto.LoanDto
+              mapping: decisiondtosend:com.group11.msdecide.model.dto.DecisionDto
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       bootstrap-servers: localhost:9092
     consumer:
@@ -32,12 +40,7 @@ spring:
       bootstrap-servers: localhost:9092
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: update
+
 
 
 logging:
