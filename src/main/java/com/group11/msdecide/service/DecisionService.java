@@ -6,13 +6,10 @@ import com.group11.msdecide.model.dto.DecisionDto;
 import com.group11.msdecide.model.dto.FinancialInfoDto;
 import com.group11.msdecide.model.dto.LoanDto;
 import com.group11.msdecide.model.enums.DecisionStatus;
-import com.group11.msdecide.model.enums.Status;
 import com.group11.msdecide.repository.FinancialInfoRepository;
 import com.group11.msdecide.repository.LoanDecisionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -30,6 +27,9 @@ public class DecisionService {
     private final LoanDecisionRepository decisionRepository;
     private final FinancialInfoRepository financialInfoRepository;
     private final KafkaTemplate<String, DecisionDto> kafkaTemplate;
+
+    private final KafkaTemplate<String, DecisionDto> kafkaNotificationTemplate;
+
 
 
     @KafkaListener(topics = "loanCreatedTopic", groupId = "loanEventGroup")
@@ -55,7 +55,12 @@ public class DecisionService {
                 .build();
 
         kafkaTemplate.send("decisionTopic", decisionDto);
-        log.info("Log message - a loan status for decision id: {} has been sent successfully", decisionDto.toString());
+        log.info("Log message - a decision status for decision id: {} has been sent successfully", decisionDto.toString());
+
+        kafkaNotificationTemplate.send("decisionMadeTopic",decisionDto);
+        log.info("Log message - a decision status for ms-notification for decision id: {} has been sent successfully", decisionDto.toString());
+
+
         return decisionRepository.save(decision);
     }
 
